@@ -1,0 +1,7 @@
+<!-- This would be a proper ICO file in production -->
+<!-- For now, creating a simple favicon placeholder -->
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#2563eb" rx="4"/>
+  <path fill="white" d="M8 12h6v8H8V12zm10-4h6v12h-6V8z"/>
+  <circle cx="16" cy="24" r="2" fill="white"/>
+</svg>

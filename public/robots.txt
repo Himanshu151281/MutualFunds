@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Mutual Fund Compass
+# A comprehensive platform for mutual fund investment tracking and analysis
+
+Sitemap: /sitemap.xml
