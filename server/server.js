@@ -31,10 +31,31 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')
   : ['http://localhost:8080', 'http://localhost:3000', 'http://localhost:5173'];
 
+console.log('CORS Origins:', allowedOrigins);
+console.log('Environment:', process.env.NODE_ENV);
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? allowedOrigins.filter(origin => !origin.includes('localhost'))
-    : allowedOrigins,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or Postman)
+    if (!origin) return callback(null, true);
+    
+    if (process.env.NODE_ENV === 'production') {
+      // In production, only allow specific origins
+      if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
+        callback(null, true);
+      } else {
+        console.log('CORS blocked origin:', origin);
+        callback(new Error('Not allowed by CORS'));
+      }
+    } else {
+      // In development, allow all localhost origins
+      if (origin.includes('localhost') || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -56,6 +77,21 @@ app.get('/api/health', (req, res) => {
     status: 'OK', 
     message: 'Server is running',
     timestamp: new Date().toISOString()
+  });
+});
+
+// Root route
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Mutual Fund Compass API is running',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      user: '/api/user',
+      funds: '/api/funds'
+    }
   });
 });
 

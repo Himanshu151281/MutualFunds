@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: mutual-fund-compass-backend
+    env: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: ALLOWED_ORIGINS
+        value: https://mutual-funds-black.vercel.app
+      - key: MONGODB_URI
+        fromDatabase:
+          name: mutual-fund-compass-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRE
+        value: 30d
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: 100
+
+databases:
+  - name: mutual-fund-compass-db
+    databaseName: mutual-fund-compass
+    user: mfc-user
