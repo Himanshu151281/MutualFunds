@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { userApi } from '@/lib/api';
 import { Trash2, Search, TrendingUp, Calendar, Building } from 'lucide-react';
+import SearchWithSuggestions from '@/components/SearchWithSuggestions';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface SavedFund {
@@ -198,16 +198,12 @@ const SavedFunds: React.FC = () => {
 
         {/* Search Bar */}
         <div className="mb-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              type="text"
-              placeholder="Search by fund name, house, code, or category..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
+          <SearchWithSuggestions
+            placeholder="Search by fund name, house, code, or category..."
+            value={searchTerm}
+            onChange={setSearchTerm}
+            className="w-full"
+          />
         </div>
 
         {/* Stats */}
